@@ -38,11 +38,7 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Build & assemble with gradle
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: >
-            build
-            assemble${{ env.VARIANT }}
+        run: ./gradlew assembleDebug
 
       - name: Zip ${{ env.VARIANT }} apk as ${{ env.ZIP }}
         run: zip -j ${{ env.ZIP }} app/build/outputs/apk/${{ env.VARIANT }}/app-${{ env.VARIANT }}.apk
