@@ -1,22 +1,12 @@
-# This action builds the alpha version as apk on a password protected zip,
-# and uploads it to the alpha release.
 # Adapted from https://github.com/amirisback/automated-build-android-app-with-github-action
-name: Build alpha apk
+name: Build Debug APK
 
 on:
-  # Triggers the workflow on push events for the master branch
   # push:
   #   branches:
   #     - master
 
-  # Run this workflow manually from the Actions tab
   workflow_dispatch:
-
-# parameters
-env:
-  VARIANT: alpha
-  TAG: alpha
-  ZIP: app-alpha.zip
 
 jobs:
   build:
@@ -40,17 +30,8 @@ jobs:
       - name: Build & assemble with gradle
         run: ./gradlew assembleDebug
 
-      - name: Zip ${{ env.VARIANT }} apk as ${{ env.ZIP }}
-        run: zip -j ${{ env.ZIP }} app/build/outputs/apk/${{ env.VARIANT }}/app-${{ env.VARIANT }}.apk
-
-      - name: Update ${{ env.TAG }} tag to current commit
-        # equivalent to EndBug/latest-tag@latest but simpler
-        run: |
-          git tag --force ${{ env.TAG }}
-          git push --force origin tag ${{ env.TAG }}
-
-      - name: Upload ${{ env.ZIP }} to ${{ env.TAG }} release
-        uses: softprops/action-gh-release@v1
+-     - name: Upload APK
+        uses: actions/upload-artifact@v3
         with:
-          tag_name: ${{ env.TAG }}
-          files: ${{ env.ZIP }}
+          name: app-debug
+          path: app/build/outputs/apk/debug/*.apk
