@@ -1,10 +1,9 @@
-# Adapted from https://github.com/amirisback/automated-build-android-app-with-github-action
 name: Build Debug APK
 
 on:
-  # push:
-  #   branches:
-  #     - master
+  push:
+     branches:
+       - master
 
   workflow_dispatch:
 
@@ -24,7 +23,6 @@ jobs:
           distribution: 'temurin'
 
       - name: Set gradlew as executable
-        # for some reason the gradle-build-action doesn't do this automatically
         run: chmod +x ./gradlew
 
       - name: Build & assemble with gradle
