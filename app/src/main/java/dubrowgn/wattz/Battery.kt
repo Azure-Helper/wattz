@@ -35,6 +35,12 @@ class Battery(ctx: Context) {
     private fun fromMillis(v: Double?) : Double? {
         return v?.div(1_000.0)
     }
+    
+    val batteryPct: Float? = batteryStatus?.let { intent ->
+    val level: Int = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1)
+    val scale: Int = intent.getIntExtra(BatteryManager.EXTRA_SCALE, -1)
+    level * 100 / scale.toFloat()
+    }
 
     val microamps : Double? get() = -1.0 * prop(BatteryManager.BATTERY_PROPERTY_CURRENT_NOW)
     val milliamps : Double? get() = fromMillis(microamps)
