@@ -56,6 +56,12 @@ class MainActivity : Activity() {
 
         val txtWatts = fmt(battery.watts)
 
+        val batteryPct: Float? = batteryStatus?.let { intent ->
+        val level: Int = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1)
+        val scale: Int = intent.getIntExtra(BatteryManager.EXTRA_SCALE, -1)
+        level * 100 / scale.toFloat()
+        }
+
         @SuppressLint("SetTextI18n")
         txtDetails.text =
             "Charging: ${battery.charging}\n" +
@@ -65,6 +71,7 @@ class MainActivity : Activity() {
             "Volts: ${fmt(battery.volts)}V\n" +
             "Power: ${txtWatts}W\n" +
             "Time to Full: ${fmtSeconds(battery.secondsUntilCharged)}\n"
+            "Battery: ${batteryPct}
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
