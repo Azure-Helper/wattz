@@ -56,10 +56,8 @@ class MainActivity : Activity() {
 
         val txtWatts = fmt(battery.watts)
 
-        val batteryPct: Float? = batteryStatus?.let { intent ->
-        val level: Int = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1)
-        val scale: Int = intent.getIntExtra(BatteryManager.EXTRA_SCALE, -1)
-        level * 100 / scale.toFloat()
+        val batteryStatus: Intent? = IntentFilter(Intent.ACTION_BATTERY_CHANGED).let { ifilter ->
+        context.registerReceiver(null, ifilter)
         }
 
         @SuppressLint("SetTextI18n")
@@ -70,8 +68,8 @@ class MainActivity : Activity() {
             "Temperature: ${fmt(battery.celsius)}°C\n" +
             "Volts: ${fmt(battery.volts)}V\n" +
             "Power: ${txtWatts}W\n" +
-            "Time to Full: ${fmtSeconds(battery.secondsUntilCharged)}\n"
-            "Battery: ${batteryPct}
+            "Time to Full: ${fmtSeconds(battery.secondsUntilCharged)}\n" +
+            "Battery: ${batteryStatus}\n"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
